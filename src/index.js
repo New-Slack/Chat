@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 const express = require("express");
 const socket = require("socket.io");
@@ -21,79 +21,35 @@ app.get("/", (req, res) => {
 });
 
 app.get("*", (req, res) => res.redirect("/"));
-
+const queue = {};
 let io = socket(server);
 io.on("connection", (socket) => {
-  // console.log(socket.id);
-  // console.log(socket.rooms);
+  socket.on("creatGroup", (groupName, done) => {
+    const group = io.of(groupName);
+    queue[groupName] = [];
+    group.on("connection", (groupSocket) => {
+      groupSocket.nickName = "Anonymous";
 
-  socket.on('creatGroup', (groupName, done) => {
-    const of = io.of(groupName)
-    of.on("connection", (socket) => {
-      socket.on("newMassage", (message) => {
-        of.emit('newMassage',(message))
-        
-    })
-  })
-    console.log(groupName);
-    done()
-  })
-  
-  
+      groupSocket.on("newMessage", (message) => {
+        queue[groupName].push(`${groupSocket.nickName}: ${message}`);
+        console.log(queue);
+        group.sockets.forEach((socket) => {
+          if (socket !== groupSocket)
+            socket.emit("newMessage", `${groupSocket.nickName}: ${message}`);
+        });
+      });
 
-  
-  // socket.on('joinGroup', (groupName, done) => {
-  //   const of = io.of(groupName)
-  //   of.on("connection", (socket) => console.log('joined'))
-  //   console.log(groupName);
-  //   done()
-  // })
+      groupSocket.on(
+        "nickName",
+        (nickname) => (groupSocket.nickName = nickname)
+      );
 
+      console.log(queue);
+      queue[groupName].forEach((message) => {
+        groupSocket.emit("newMessage", message);
+      });
+    });
 
-  // socket.on("join_room", (data) => {
-  //   socket.join(data);
-  //   console.log("User Joined Room: " + data);
-  // });
-
-  // socket.on("send_message", (data) => {
-  //   console.log(data);
-  //   socket.to(data.room).emit("receive_message", data.content);
-  // });
-
-  // socket.on("disconnect", () => {
-  //   console.log("USER DISCONNECTED");
-  // });
+    done();
+  });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const slack = require('socket.io')(PORT);
-// require('dotenv').config()
-// const PORT = process.env.PORT || 3001;
-// // const group= slack.of()
-
-// const msgQueue = {
-//     pickUpData: {},
-//     inTransitData: {},
-//     deliveredData: {}
-// };
-
-// slack.on('connection',(socket)=>{
-// console.log('CONNECTED', socket.id)
-// slack.on('')
-
-
-
-// })

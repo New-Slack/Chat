@@ -10,32 +10,46 @@ html(lang="en")
     script(defer,type="module" , src="../public/js/app.js")  
   body 
     header
-      h1 Noom
-    // if we go here render this file
+      h1 Slack 2
     main
       form#createGroupForm
+        label(for="groupNameInp") Enter group name:
         input(
+          id = "groupNameInp",
           type="text",
           name="nickname",
-          placeholder=" Create A Group",
+          placeholder="Create A Group",
           required
         )
         button(type="submit") Create
-      ul
-      form#messageForm
-        input(
-          type="text",
-          name="message",
-          placeholder="Write a message",
-          required
-        )
-        button(type="submit") Send
-        
       form#joinGroup
+        label(for="groupNameJ") Join a group:
         input(
+          id = "groupNameJ",
           type="text",
           name="join",
           placeholder="Join A Room",
           required
         )
         button(type="submit") Join
+      form#nickname
+        label(for="nicknameInp") Enter your nickname:
+        input(
+          id = "nicknameInp",
+          type="text",
+          name="nickname",
+          placeholder="choose a Nickname",
+          required
+        )
+        button(type="submit") nickname
+      ul#messages 
+      form#messageForm
+        label(for="messageInp") Enter a message:
+        input(
+          id = "messageInp",
+          type="text",
+          name="message",
+          placeholder="Write a message",
+          required
+        )
+        button(type="submit") Send a message
