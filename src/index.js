@@ -1,5 +1,5 @@
 "use strict";
-
+require("dotenv").config();
 const express = require("express");
 const socket = require("socket.io");
 const app = express();
@@ -8,8 +8,8 @@ const cors = require("cors");
 app.use(cors());
 app.use(express.json());
 
-const server = app.listen("3002", () => {
-  console.log("Server Running on Port 3002...");
+const server = app.listen(process.env.PORT || 3000, () => {
+  console.log("Server Running on Port " + process.env.PORT);
 });
 
 app.set("view engine", "pug");
