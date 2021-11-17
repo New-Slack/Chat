@@ -1,0 +1,41 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Document
+    link(rel="stylesheet", href="https://unpkg.com/mvp.css")
+    script(defer, src="/socket.io/socket.io.js")
+    script(defer,type="module" , src="../public/js/app.js")  
+  body 
+    header
+      h1 Noom
+    // if we go here render this file
+    main
+      form#createGroupForm
+        input(
+          type="text",
+          name="nickname",
+          placeholder=" Create A Group",
+          required
+        )
+        button(type="submit") Create
+      ul
+      form#messageForm
+        input(
+          type="text",
+          name="message",
+          placeholder="Write a message",
+          required
+        )
+        button(type="submit") Send
+        
+      form#joinGroup
+        input(
+          type="text",
+          name="join",
+          placeholder="Join A Room",
+          required
+        )
+        button(type="submit") Join
